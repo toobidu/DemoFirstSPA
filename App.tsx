@@ -1,41 +1,25 @@
 import React from 'react';
-// import {NavigationContainer} from '@react-navigation/native';
-// import {createStackNavigator} from '@react-navigation/stack';
-// import SplashScreen from './src/screens/onboarding/SplashScreen.tsx';
-// import OnboardingScreen from '@/screens/onboarding/OnboardingScreen';
-// import {RootStackParamList} from '@/navigation';
-import {StyleSheet, Text, View} from 'react-native';
-// const Stack = createStackNavigator<RootStackParamList>();
+import { View, Text, StyleSheet } from 'react-native';
 
 const App = () => {
-//   return (
-//     <NavigationContainer>
-//       <Stack.Navigator
-//         initialRouteName="Splash"
-//         screenOptions={{
-//           headerShown: false,
-//           gestureEnabled: false,
-//         }}>
-//         <Stack.Screen name="Splash" component={SplashScreen} />
-//         <Stack.Screen name="Onboarding" component={OnboardingScreen} />
-//       </Stack.Navigator>
-//     </NavigationContainer>
-//   );
-// };
-    return (
-        <View style={styles.container}>
-            <Text>Open up App.tsx to start working on your app!</Text>
-        </View>
-    );
+  return (
+    <View style={styles.container}>
+      <Text style={styles.text}>Hello World</Text>
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+  },
+  text: {
+    fontSize: 24,
+    color: '#000',
+  },
 });
 
 export default App;
