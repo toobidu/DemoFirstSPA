@@ -1,4 +1,14 @@
 import React, { useState } from 'react';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  ScrollView,
+  TextInput,
+  StyleSheet,
+  Modal,
+} from 'react-native';
 
 const PlaylistScreen = () => {
   const [isSearchVisible, setIsSearchVisible] = useState(false);
@@ -36,185 +46,294 @@ const PlaylistScreen = () => {
     }
   };
 
-  const styles = {
-    container: { minHeight: '100vh', backgroundColor: '#121212', color: '#fff' },
-    header: {
-      height: '60px',
-      display: 'flex',
-      alignItems: 'center',
-      padding: '0 16px',
-      borderBottom: '1px solid rgba(255,255,255,0.1)',
-    },
-    title: { fontSize: '24px', fontWeight: 'bold', flex: 1 },
-    searchBarContainer: { flex: 1, display: 'flex', alignItems: 'center' },
-    searchBar: {
-      flex: 1,
-      display: 'flex',
-      alignItems: 'center',
-      backgroundColor: '#fff',
-      borderRadius: '8px',
-      padding: '0 12px',
-      height: '40px',
-    },
-    searchInput: { flex: 1, margin: '0 8px', fontSize: '16px', color: '#000', border: 'none', outline: 'none' },
-    iconButton: { width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' },
-    content: { padding: '16px' },
-    playlistItem: { display: 'flex', alignItems: 'center', padding: '8px 0', marginBottom: '8px' },
-    playlistCover: { width: '56px', height: '56px', borderRadius: '4px', marginRight: '12px' },
-    playlistInfo: { flex: 1 },
-    playlistName: { fontSize: '16px', fontWeight: '500', marginBottom: '4px' },
-    playlistDetails: { fontSize: '14px', color: 'rgba(255,255,255,0.6)' },
-    emptyState: { textAlign: 'center', padding: '20px', color: 'rgba(255,255,255,0.6)', fontSize: '16px' },
-    modalOverlay: {
-      position: 'fixed',
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      backgroundColor: 'rgba(0,0,0,0.8)',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      zIndex: 1000,
-    },
-    modalContent: {
-      backgroundColor: '#121212',
-      borderRadius: '20px',
-      padding: '20px',
-      width: '90%',
-      maxWidth: '400px',
-    },
-    modalHeader: { position: 'relative', textAlign: 'center', marginBottom: '30px' },
-    closeButton: { position: 'absolute', left: 0, top: 0, padding: '5px', cursor: 'pointer' },
-    modalTitle: { fontSize: '18px', fontWeight: 'bold' },
-    inputContainer: { marginBottom: '30px' },
-    inputLabel: { fontSize: '14px', color: 'rgba(255,255,255,0.6)', marginBottom: '8px' },
-    playlistNameInput: {
-      border: '1px solid rgba(255,255,255,0.1)',
-      borderRadius: '8px',
-      padding: '15px',
-      fontSize: '16px',
-      color: '#fff',
-      backgroundColor: 'rgba(255,255,255,0.05)',
-      width: '100%',
-      boxSizing: 'border-box',
-    },
-    privacyContainer: { marginBottom: '30px' },
-    privacyHeader: { display: 'flex', alignItems: 'center', marginBottom: '16px' },
-    privacyTitle: { fontSize: '16px', fontWeight: '600', marginLeft: '8px' },
-    privacyOption: {
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      backgroundColor: 'rgba(255,255,255,0.05)',
-      padding: '16px',
-      borderRadius: '8px',
-    },
-    privacyText: { fontSize: '16px', marginBottom: '4px' },
-    privacyDescription: { fontSize: '13px', color: 'rgba(255,255,255,0.6)' },
-    createButton: {
-      backgroundColor: '#1DB954',
-      padding: '16px',
-      borderRadius: '25px',
-      textAlign: 'center',
-      cursor: 'pointer',
-    },
-    createButtonDisabled: { backgroundColor: 'rgba(255,255,255,0.1)' },
-    createButtonText: { fontSize: '16px', fontWeight: 'bold', color: '#000' },
-  };
-
   return (
-    <div style={styles.container}>
-      <div style={styles.header}>
+    <View style={styles.container}>
+      <View style={styles.header}>
         {!isSearchVisible ? (
           <>
-            <span style={styles.title}>Thư viện</span>
-            <div style={styles.iconButton} onClick={toggleSearch}>🔍</div>
-            <div style={styles.iconButton} onClick={handleCreatePlaylist}>➕</div>
+            <Text style={styles.title}>Thư viện</Text>
+            <TouchableOpacity style={styles.iconButton} onPress={toggleSearch}>
+              <Text>🔍</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.iconButton} onPress={handleCreatePlaylist}>
+              <Text>➕</Text>
+            </TouchableOpacity>
           </>
         ) : (
-          <div style={styles.searchBarContainer}>
-            <div style={styles.searchBar}>
-              <span>🔍</span>
-              <input
+          <View style={styles.searchBarContainer}>
+            <View style={styles.searchBar}>
+              <Text>🔍</Text>
+              <TextInput
                 style={styles.searchInput}
                 placeholder="Tìm kiếm trong thư viện"
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChangeText={setSearchQuery}
                 autoFocus
               />
-              <span style={{ cursor: 'pointer' }} onClick={toggleSearch}>❌</span>
-            </div>
-          </div>
+              <TouchableOpacity onPress={toggleSearch}>
+                <Text>❌</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
         )}
-      </div>
-      <div style={styles.content}>
+      </View>
+      <ScrollView style={styles.content}>
         {playlists.length > 0 ? (
           playlists.map((item) => (
-            <div key={item.id} style={styles.playlistItem}>
-              <img src={item.coverImage} alt={item.name} style={styles.playlistCover} />
-              <div style={styles.playlistInfo}>
-                <span style={styles.playlistName}>{item.name}</span>
-                <p style={styles.playlistDetails}>
+            <View key={item.id} style={styles.playlistItem}>
+              <Image source={{ uri: item.coverImage }} style={styles.playlistCover} />
+              <View style={styles.playlistInfo}>
+                <Text style={styles.playlistName}>{item.name}</Text>
+                <Text style={styles.playlistDetails}>
                   {item.songCount} bài hát • {item.isPublic ? 'Công khai' : 'Riêng tư'}
-                </p>
-              </div>
-            </div>
+                </Text>
+              </View>
+            </View>
           ))
         ) : (
-          <p style={styles.emptyState}>Chưa có playlist nào. Hãy tạo playlist đầu tiên của bạn!</p>
+          <Text style={styles.emptyState}>Chưa có playlist nào. Hãy tạo playlist đầu tiên của bạn!</Text>
         )}
-      </div>
-      {isModalVisible && (
-        <div style={styles.modalOverlay}>
-          <div style={styles.modalContent}>
-            <div style={styles.modalHeader}>
-              <div style={styles.closeButton} onClick={() => setIsModalVisible(false)}>❌</div>
-              <span style={styles.modalTitle}>Tạo playlist mới</span>
-            </div>
-            <div style={styles.inputContainer}>
-              <span style={styles.inputLabel}>Tên playlist</span>
-              <input
+      </ScrollView>
+      <Modal
+        visible={isModalVisible}
+        transparent={true}
+        animationType="fade"
+        onRequestClose={() => setIsModalVisible(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            <View style={styles.modalHeader}>
+              <TouchableOpacity
+                style={styles.closeButton}
+                onPress={() => setIsModalVisible(false)}
+              >
+                <Text>❌</Text>
+              </TouchableOpacity>
+              <Text style={styles.modalTitle}>Tạo playlist mới</Text>
+            </View>
+            <View style={styles.inputContainer}>
+              <Text style={styles.inputLabel}>Tên playlist</Text>
+              <TextInput
                 style={styles.playlistNameInput}
                 placeholder="Nhập tên playlist của bạn"
                 value={playlistName}
-                onChange={(e) => setPlaylistName(e.target.value)}
+                onChangeText={setPlaylistName}
                 autoFocus
               />
-            </div>
-            <div style={styles.privacyContainer}>
-              <div style={styles.privacyHeader}>
-                <span>🔒</span>
-                <span style={styles.privacyTitle}>Quyền riêng tư</span>
-              </div>
-              <div style={styles.privacyOption}>
-                <div>
-                  <span style={styles.privacyText}>{isPublic ? 'Công khai' : 'Riêng tư'}</span>
-                  <p style={styles.privacyDescription}>
+            </View>
+            <View style={styles.privacyContainer}>
+              <View style={styles.privacyHeader}>
+                <Text>🔒</Text>
+                <Text style={styles.privacyTitle}>Quyền riêng tư</Text>
+              </View>
+              <View style={styles.privacyOption}>
+                <View>
+                  <Text style={styles.privacyText}>{isPublic ? 'Công khai' : 'Riêng tư'}</Text>
+                  <Text style={styles.privacyDescription}>
                     {isPublic ? 'Mọi người có thể tìm thấy playlist này' : 'Chỉ bạn mới có thể xem playlist này'}
-                  </p>
-                </div>
-                <input
-                  type="checkbox"
-                  checked={isPublic}
-                  onChange={(e) => setIsPublic(e.target.checked)}
-                />
-              </div>
-            </div>
-            <div
-              style={{
-                ...styles.createButton,
-                ...(playlistName.trim() ? {} : styles.createButtonDisabled),
-              }}
-              onClick={handleSubmitPlaylist}
+                  </Text>
+                </View>
+                <TouchableOpacity
+                  onPress={() => setIsPublic(!isPublic)}
+                  style={styles.checkbox}
+                >
+                  <Text>{isPublic ? '☑' : '☐'}</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+            <TouchableOpacity
+              style={[
+                styles.createButton,
+                playlistName.trim() ? {} : styles.createButtonDisabled,
+              ]}
+              onPress={handleSubmitPlaylist}
+              disabled={!playlistName.trim()}
             >
-              <span style={styles.createButtonText}>Tạo playlist</span>
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
+              <Text style={styles.createButtonText}>Tạo playlist</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#121212',
+  },
+  header: {
+    height: 60,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(255,255,255,0.1)',
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#fff',
+    flex: 1,
+  },
+  searchBarContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  searchBar: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    paddingHorizontal: 12,
+    height: 40,
+  },
+  searchInput: {
+    flex: 1,
+    marginHorizontal: 8,
+    fontSize: 16,
+    color: '#000',
+  },
+  iconButton: {
+    width: 40,
+    height: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  content: {
+    padding: 16,
+  },
+  playlistItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 8,
+    marginBottom: 8,
+  },
+  playlistCover: {
+    width: 56,
+    height: 56,
+    borderRadius: 4,
+    marginRight: 12,
+  },
+  playlistInfo: {
+    flex: 1,
+  },
+  playlistName: {
+    fontSize: 16,
+    fontWeight: '500',
+    color: '#fff',
+    marginBottom: 4,
+  },
+  playlistDetails: {
+    fontSize: 14,
+    color: 'rgba(255,255,255,0.6)',
+  },
+  emptyState: {
+    textAlign: 'center',
+    padding: 20,
+    color: 'rgba(255,255,255,0.6)',
+    fontSize: 16,
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.8)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContent: {
+    backgroundColor: '#121212',
+    borderRadius: 20,
+    padding: 20,
+    width: '90%',
+    maxWidth: 400,
+  },
+  modalHeader: {
+    position: 'relative',
+    alignItems: 'center',
+    marginBottom: 30,
+  },
+  closeButton: {
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    padding: 5,
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#fff',
+  },
+  inputContainer: {
+    marginBottom: 30,
+  },
+  inputLabel: {
+    fontSize: 14,
+    color: 'rgba(255,255,255,0.6)',
+    marginBottom: 8,
+  },
+  playlistNameInput: {
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.1)',
+    borderRadius: 8,
+    padding: 15,
+    fontSize: 16,
+    color: '#fff',
+    backgroundColor: 'rgba(255,255,255,0.05)',
+  },
+  privacyContainer: {
+    marginBottom: 30,
+  },
+  privacyHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  privacyTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#fff',
+    marginLeft: 8,
+  },
+  privacyOption: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: 'rgba(255,255,255,0.05)',
+    padding: 16,
+    borderRadius: 8,
+  },
+  privacyText: {
+    fontSize: 16,
+    color: '#fff',
+    marginBottom: 4,
+  },
+  privacyDescription: {
+    fontSize: 13,
+    color: 'rgba(255,255,255,0.6)',
+  },
+  checkbox: {
+    width: 24,
+    height: 24,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  createButton: {
+    backgroundColor: '#1DB954',
+    padding: 16,
+    borderRadius: 25,
+    alignItems: 'center',
+  },
+  createButtonDisabled: {
+    backgroundColor: 'rgba(255,255,255,0.1)',
+  },
+  createButtonText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#000',
+  },
+});
 
 export default PlaylistScreen;

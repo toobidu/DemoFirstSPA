@@ -15,7 +15,7 @@ import apiInstance from '../../service/apiInstance';
 import AuthService from '../../service/auth';
 import WibuLogin from '../../assets/images/wibu/WibuLogin';
 import GoogleIcon from '../../assets/icons/GoogleIcon';
-
+import MainApp from '../music/MainApp';
 
 const LoginScreen = () => {
   const navigation = useNavigation();
@@ -50,11 +50,14 @@ const LoginScreen = () => {
         throw new Error(response.errorMessage || 'Đăng nhập thất bại');
       }
 
-     await EncryptedStorage.setItem('token', response.token);
-     await EncryptedStorage.setItem('refreshToken', response.refreshToken);
+      await EncryptedStorage.setItem('token', response.token);
+      await EncryptedStorage.setItem('refreshToken', response.refreshToken);
 
       // Điều hướng đến màn hình Home
-      navigation.navigate('HomeScreen');
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'MainApp' }],
+      });
     } catch (err) {
       setError(err.message || 'Đăng nhập thất bại. Vui lòng thử lại.');
     } finally {
@@ -65,7 +68,7 @@ const LoginScreen = () => {
   const handleGoogleSignIn = async () => {
     setLoading(true);
     try {
-      // TODO: Tích hợp Google Sign-In (ví dụ: dùng @react-native-google-signin/google-signin)
+      // TODO: Tích hợp Google Sign-In
       // Lấy user_google_uid từ Google Sign-In
       const user_google_uid = 'fake-google-uid'; // Thay bằng UID thực từ Google Sign-In
 
@@ -85,7 +88,10 @@ const LoginScreen = () => {
       await EncryptedStorage.setItem('refreshToken', response.refreshToken);
 
       // Điều hướng đến màn hình Home
-      navigation.navigate('HomeScreen');
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'MainApp' }],
+      });
     } catch (err) {
       setError(err.message || 'Đăng nhập Google thất bại.');
     } finally {
