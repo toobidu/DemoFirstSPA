@@ -16,6 +16,7 @@ import AuthService from '../../service/auth';
 import WibuLogin from '../../assets/images/wibu/WibuLogin';
 import GoogleIcon from '../../assets/icons/GoogleIcon';
 import MainApp from '../music/MainApp';
+import { Lock, Sms, Eye, EyeSlash, ArrowLeft } from 'iconsax-react-nativejs';
 
 const LoginScreen = () => {
   const navigation = useNavigation();
@@ -105,105 +106,108 @@ const LoginScreen = () => {
     }
   }, [error]);
 
-  return (
-    <SafeAreaView style={styles.safeArea}>
-      <View style={styles.header}>
-        <TouchableOpacity
-          onPress={() => navigation.goBack()}
-          style={styles.backButton}
-        >
-          <Text style={styles.backIcon}>←</Text>
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>Đăng nhập</Text>
-      </View>
-      <View style={styles.container}>
-        <View style={styles.logoContainer}>
-          <WibuLogin width={170} height={170} />
+    return (
+      <SafeAreaView style={styles.safeArea}>
+        <View style={styles.header}>
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            style={styles.backButton}
+          >
+            <ArrowLeft color="#ffffff"/>
+          </TouchableOpacity>
+          <Text style={styles.headerTitle}>Đăng nhập</Text>
         </View>
-        <View style={styles.content}>
-          <View style={styles.textContainer}>
-            <Text style={styles.title}>Chào mừng trở lại!</Text>
-            <Text style={styles.subtitle}>SoundClone rất nhớ bạn</Text>
+        <View style={styles.container}>
+          <View style={styles.logoContainer}>
+            <WibuLogin width={170} height={170} />
           </View>
-          <View style={styles.formContainer}>
-            <View style={styles.inputContainer}>
-              <View style={styles.inputWrapper}>
-                <Text style={styles.inputIcon}>📧</Text>
-                <TextInput
-                  style={styles.input}
-                  placeholder="Email"
-                  placeholderTextColor="#888"
-                  value={formData.email}
-                  onChangeText={(text) => handleChange('email', text)}
-                  keyboardType="email-address"
-                  autoCapitalize="none"
-                />
-              </View>
+          <View style={styles.content}>
+            <View style={styles.textContainer}>
+              <Text style={styles.title}>Chào mừng trở lại!</Text>
+              <Text style={styles.subtitle}>SoundClone rất nhớ bạn</Text>
             </View>
-            <View style={styles.inputContainer}>
-              <View style={styles.inputWrapper}>
-                <Text style={styles.inputIcon}>🔒</Text>
-                <TextInput
-                  style={styles.input}
-                  placeholder="Mật khẩu"
-                  placeholderTextColor="#888"
-                  value={formData.password}
-                  onChangeText={(text) => handleChange('password', text)}
-                  secureTextEntry={!showPassword}
-                />
-                <TouchableOpacity
-                  style={styles.eyeIcon}
-                  onPress={() => setShowPassword(!showPassword)}
-                >
-                  <Text>{showPassword ? '👁️' : '👁️‍🗨️'}</Text>
-                </TouchableOpacity>
+            <View style={styles.formContainer}>
+              <View style={styles.inputContainer}>
+                <View style={styles.inputWrapper}>
+                  <Sms color="#ffffff" variant="Bold"/>
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Email"
+                    placeholderTextColor="#888"
+                    value={formData.email}
+                    onChangeText={(text) => handleChange('email', text)}
+                    keyboardType="email-address"
+                    autoCapitalize="none"
+                  />
+                </View>
               </View>
-              <View style={styles.forgotPasswordContainer}>
-                <TouchableOpacity
-                  onPress={() => navigation.navigate('ForgotPasswordScreen')}
-                >
-                  <Text style={styles.forgotPasswordText}>Quên mật khẩu?</Text>
-                </TouchableOpacity>
+              <View style={styles.inputContainer}>
+                <View style={styles.inputWrapper}>
+                  <Lock color="#ffffff" size={22} variant="Bold"/>
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Mật khẩu"
+                    placeholderTextColor="#888"
+                    value={formData.password}
+                    onChangeText={(text) => handleChange('password', text)}
+                    secureTextEntry={!showPassword}
+                  />
+                  <TouchableOpacity
+                    style={styles.eyeIcon}
+                    onPress={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? (
+                      <Eye size={24} color="#fff" variant="Linear" />
+                    ) : (
+                      <EyeSlash size={24} color="#fff" variant="Linear" />
+                    )}
+                  </TouchableOpacity>
+                </View>
+                <View style={styles.forgotPasswordContainer}>
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('ForgotPasswordScreen')}
+                  >
+                    <Text style={styles.forgotPasswordText}>Quên mật khẩu?</Text>
+                  </TouchableOpacity>
+                </View>
               </View>
-            </View>
-            <TouchableOpacity
-              style={[styles.button, loading && styles.buttonDisabled]}
-              onPress={handleSubmit}
-              disabled={loading}
-            >
-              <Text style={styles.buttonText}>
-                {loading ? 'Đang đăng nhập...' : 'Đăng nhập'}
-              </Text>
-            </TouchableOpacity>
-            <View style={styles.dividerContainer}>
-              <View style={styles.dividerLine} />
-              <Text style={styles.dividerText}>Hoặc</Text>
-              <View style={styles.dividerLine} />
-            </View>
-            <TouchableOpacity
-              style={[styles.googleButton, loading && styles.buttonDisabled]}
-              onPress={handleGoogleSignIn}
-              disabled={loading}
-            >
-              <GoogleIcon width={20} height={20} style={styles.googleIcon} />
-              <Text style={styles.googleButtonText}>Tiếp tục với Google</Text>
-            </TouchableOpacity>
-            <View style={styles.registerContainer}>
-              <Text style={styles.registerText}>Bạn chưa có tài khoản? </Text>
               <TouchableOpacity
-                onPress={() => navigation.navigate('RegisterScreen')}
+                style={[styles.button, loading && styles.buttonDisabled]}
+                onPress={handleSubmit}
+                disabled={loading}
               >
-                <Text style={styles.registerLink}>Đăng ký ngay</Text>
+                <Text style={styles.buttonText}>
+                  {loading ? 'Đang đăng nhập...' : 'Đăng nhập'}
+                </Text>
               </TouchableOpacity>
+              <View style={styles.dividerContainer}>
+                <View style={styles.dividerLine} />
+                <Text style={styles.dividerText}>Hoặc</Text>
+                <View style={styles.dividerLine} />
+              </View>
+              <TouchableOpacity
+                style={[styles.googleButton, loading && styles.buttonDisabled]}
+                onPress={handleGoogleSignIn}
+                disabled={loading}
+              >
+                <GoogleIcon width={20} height={20} style={styles.googleIcon} />
+                <Text style={styles.googleButtonText}>Tiếp tục với Google</Text>
+              </TouchableOpacity>
+              <View style={styles.registerContainer}>
+                <Text style={styles.registerText}>Bạn chưa có tài khoản? </Text>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('RegisterScreen')}
+                >
+                  <Text style={styles.registerLink}>Đăng ký ngay</Text>
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
         </View>
-      </View>
-    </SafeAreaView>
-  );
-};
+      </SafeAreaView>
+    );
+  };
 
-// Giữ nguyên styles từ code gốc
 const styles = StyleSheet.create({
   safeArea: { flex: 1, backgroundColor: '#000' },
   header: {

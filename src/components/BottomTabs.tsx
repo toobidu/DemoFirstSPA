@@ -1,34 +1,40 @@
 import React from 'react';
+import { View, Text, TouchableOpacity } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import HomeScreen from '../screens/music/HomeScreen';
-import SearchingScreen from '../screens/music/SearchingScreen';
-import PlaylistScreen from '../screens/music/PlaylistScreen';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import { useMusic } from '../context/MusicContext';
+import { playTrack, pauseTrack } from '../services/TrackPlayerService';
+import NowPlayingScreen from '../screens/NowPlayingScreen';
+import PlaylistScreen from '../screens/PlaylistScreen';
 
 const Tab = createBottomTabNavigator();
 
 const BottomTabs = () => {
-  return (
-    <Tab.Navigator
-      screenOptions={({ route }) => ({
-        headerShown: false,
-        tabBarStyle: { backgroundColor: '#121212', borderTopColor: 'rgba(255,255,255,0.1)' },
-        tabBarActiveTintColor: '#ffffff',
-        tabBarInactiveTintColor: '#1DB954',
-        tabBarIcon: ({ color, size, focused }) => {
-          let iconName = '';
-          if (route.name === 'HomeScreen') iconName = focused ? 'home' : 'home-outline';
-          else if (route.name === 'SearchingScreen') iconName = focused ? 'search' : 'search-outline';
-          else if (route.name === 'PlaylistScreen') iconName = focused ? 'musical-notes' : 'musical-notes-outline';
+  const { currentTrack, isPlaying, setIsPlaying } = useMusic();
 
-          return <Ionicons name={iconName} size={size} color={color} />;
-        },
-      })}
-    >
-      <Tab.Screen name="HomeScreen" component={HomeScreen} options={{ title: 'Trang chủ' }} />
-      <Tab.Screen name="SearchingScreen" component={SearchingScreen} options={{ title: 'Tìm kiếm' }} />
-      <Tab.Screen name="PlaylistScreen" component={PlaylistScreen} options={{ title: 'Thư viện' }} />
-    </Tab.Navigator>
+  const handlePlayPause = async () => {
+    if (isPlaying) {
+      await pauseTrack();
+    } else {
+      await playTrack();
+    }
+    setIsPlaying(!isPlaying);
+  };
+
+  return (
+    <View style={{ flex: 1 }}>
+      <Tab.Navigator>
+        <Tab.Screen name="Playlist" component={PlaylistScreen} />
+        <Tab.Screen name="NowPlaying" component={NowPlayingScreen} />
+      </Tab.Navigator>
+      {currentTrack && (
+        <View style={{ padding: 10, backgroundColor: '#f0f0f0' }}>
+          <Text>{currentTrack.title} - {currentTrack.artist}</Text>
+          <TouchableOpacity onPress={handlePlayPause}>
+            <Text>{isPlaying ? 'Tạm dừng' : 'Phát'}</Text>
+          </TouchableOpacity>
+        </View>
+      )}
+    </View>
   );
 };
 

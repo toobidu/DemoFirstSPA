@@ -1,10 +1,9 @@
-// screens/music/MainApp.tsx
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from './HomeScreen';
 import SearchingScreen from './SearchingScreen';
 import PlaylistScreen from './PlaylistScreen';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import { Home, SearchNormal1, MusicPlaylist } from 'iconsax-react-nativejs';
 
 const Tab = createBottomTabNavigator();
 
@@ -18,11 +17,13 @@ const MainApp = () => {
           borderTopColor: '#1DB954',
         },
         tabBarIcon: ({ color, size, focused }) => {
-          let iconName = '';
-          if (route.name === 'HomeScreen') iconName = focused ? 'home' : 'home-outline';
-          else if (route.name === 'SearchingScreen') iconName = focused ? 'search' : 'search-outline';
-          else if (route.name === 'PlaylistScreen') iconName = focused ? 'musical-notes' : 'musical-notes-outline';
-          return <Ionicons name={iconName} size={size} color={color} />;
+          if (route.name === 'HomeScreen') {
+            return <Home size={size} color={color} variant={focused ? "Bold" : "Outline"} />;
+          } else if (route.name === 'SearchingScreen') {
+            return <SearchNormal1 size={size} color={color} variant={focused ? "Bold" : "Outline"} />;
+          } else if (route.name === 'PlaylistScreen') {
+            return <MusicPlaylist size={size} color={color} variant={focused ? "Bold" : "Outline"} />;
+          }
         },
         tabBarActiveTintColor: '#1DB954',
         tabBarInactiveTintColor: 'white',
