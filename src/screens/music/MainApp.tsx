@@ -4,6 +4,7 @@ import HomeScreen from './HomeScreen';
 import SearchingScreen from './SearchingScreen';
 import PlaylistScreen from './PlaylistScreen';
 import { Home, SearchNormal1, MusicPlaylist } from 'iconsax-react-nativejs';
+import ProfileScreen from "../other/sidebar-screen/ProfileScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -33,6 +34,7 @@ const MainApp = () => {
       <Tab.Screen name="HomeScreen" component={HomeScreen} options={{ title: 'Trang chủ' }} />
       <Tab.Screen name="SearchingScreen" component={SearchingScreen} options={{ title: 'Tìm kiếm' }} />
       <Tab.Screen name="PlaylistScreen" component={PlaylistScreen} options={{ title: 'Thư viện' }} />
+
     </Tab.Navigator>
   );
 };

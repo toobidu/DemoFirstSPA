@@ -10,6 +10,8 @@ import RegisterScreen from './screens/auth/RegisterScreen';
 import ForgotPasswordScreen from './screens/auth/ForgotPasswordScreen';
 import NowPlayingScreen from './screens/music/NowPlayingScreen';
 import MainApp from './screens/music/MainApp';
+import ProfileScreen from "./screens/other/sidebar-screen/ProfileScreen";
+import IntroductionScreen from "./screens/other/sidebar-screen/IntroductionScreen";
 
 const Stack = createStackNavigator();
 
@@ -31,11 +33,13 @@ const App = () => {
       <AuthProvider>
         <NavigationContainer>
           <Stack.Navigator screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="LoginScreen" component={LoginScreen} />
-            <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
-            <Stack.Screen name="ForgotPasswordScreen" component={ForgotPasswordScreen} />
+            {/*<Stack.Screen name="LoginScreen" component={LoginScreen} />*/}
+            {/*<Stack.Screen name="RegisterScreen" component={RegisterScreen} />*/}
+            {/*<Stack.Screen name="ForgotPasswordScreen" component={ForgotPasswordScreen} />*/}
             <Stack.Screen name="MainApp" component={MainApp} />
             <Stack.Screen name="NowPlayingScreen" component={NowPlayingScreen} />
+            <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
+            <Stack.Screen name="IntroductionScreen" component={IntroductionScreen} />
           </Stack.Navigator>
         </NavigationContainer>
       </AuthProvider>

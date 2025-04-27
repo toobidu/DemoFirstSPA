@@ -9,7 +9,7 @@ import {
   View,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import { User, Notification, Clock, Setting2, InfoCircle, Logout, ArrowRight} from 'iconsax-react-nativejs';
 
 // Import theme constants
 const COLORS = {
@@ -45,33 +45,33 @@ const Sidebar: React.FC<SidebarProps> = ({isVisible, onClose, userData, translat
   const navigation = useNavigation();
 
   const menuItems: MenuItem[] = [
-    {
-      icon: <Ionicons name="person-circle" size={24} color="#ffffff" />,
+     {
+      icon: <User color="#ffffff" variant="Bold"/>,
       title: 'Hồ sơ',
       onPress: () => navigation.navigate('ProfileScreen'),
     },
     {
-      icon: <Ionicons name="notifications" size={24} color="#ffffff" />,
+      icon: <Notification color="#ffffff" variant="Bold"/>,
       title: 'Thông báo',
       onPress: () => navigation.navigate('FavoriteSongsScreen'),
     },
     {
-      icon: <Ionicons name="time" size={24} color="#ffffff" />,
+      icon: <Clock color="#ffffff" variant="Bold"/>,
       title: 'Lịch sử',
       onPress: () => navigation.navigate('FavoriteSongsScreen'),
     },
     {
-      icon: <Ionicons name="settings" size={24} color="#ffffff" />,
+      icon: <Setting2 color="#ffffff" variant="Bold"/>,
       title: 'Cài đặt',
       onPress: () => navigation.navigate('SettingsScreen'),
     },
     {
-      icon: <Ionicons name="information-circle" size={24} color="#ffffff" />,
-      title: 'Trợ giúp',
-      onPress: () => navigation.navigate('HelpScreen'),
+      icon: <InfoCircle color="#ffffff" variant="Bold"/>,
+      title: 'Giới thiệu',
+      onPress: () => navigation.navigate('IntroductionScreen'),
     },
     {
-      icon: <Ionicons name="log-out" size={24} color="#ffffff" />,
+      icon: <Logout color="#ffffff" variant="Bold"/>,
       title: 'Đăng xuất',
       onPress: () => {
         navigation.navigate('WelcomeScreen');
@@ -93,7 +93,7 @@ const Sidebar: React.FC<SidebarProps> = ({isVisible, onClose, userData, translat
       <SafeAreaView style={styles.container}>
         <View style={styles.header}>
           <TouchableOpacity onPress={onClose} style={styles.closeButton}>
-            <Ionicons name="arrow-back" size={24} color="#ffffff" />
+            <ArrowRight color="#ffffff"/>
           </TouchableOpacity>
         </View>
 

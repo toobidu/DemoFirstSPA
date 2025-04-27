@@ -8,9 +8,9 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Slider from '@react-native-community/slider';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import TrackPlayer, { usePlaybackState, State, useProgress, useTrackPlayerEvents, Event } from 'react-native-track-player';
+import {ArrowDown2, More, Previous, Pause, Play, Next} from 'iconsax-react-nativejs';
 
 const NowPlayingScreen = () => {
   const navigation = useNavigation();
@@ -106,11 +106,11 @@ const NowPlayingScreen = () => {
           console.log('Back button pressed');
           navigation.goBack();
         }}>
-          <Ionicons name="chevron-down" size={24} color="#fff" />
+          <ArrowDown2 color="#ffffff"/>
         </TouchableOpacity>
         <Text style={styles.headerTitle}>ĐANG PHÁT</Text>
         <TouchableOpacity style={styles.headerButton} onPress={() => console.log('More button pressed')}>
-          <Ionicons name="ellipsis-vertical" size={24} color="#fff" />
+          <More color="#ffffff"/>
         </TouchableOpacity>
       </View>
 
@@ -147,13 +147,17 @@ const NowPlayingScreen = () => {
 
       <View style={styles.controlsContainer}>
         <TouchableOpacity style={styles.controlButton} onPress={previousTrack}>
-          <Ionicons name="play-skip-back" size={28} color="#fff" />
+          <Previous color="#ffffff" size={28}/>
         </TouchableOpacity>
         <TouchableOpacity style={styles.playPauseButton} onPress={togglePlay}>
-          <Ionicons name={isPlaying ? 'pause' : 'play'} size={40} color="#fff" />
+          {isPlaying ? (
+              <Pause size="40" color="#fff" />
+          ) : (
+              <Play size="40" color="#fff" />
+          )}
         </TouchableOpacity>
         <TouchableOpacity style={styles.controlButton} onPress={nextTrack}>
-          <Ionicons name="play-skip-forward" size={28} color="#fff" />
+          <Next color="#ffffff"/>
         </TouchableOpacity>
       </View>
     </SafeAreaView>

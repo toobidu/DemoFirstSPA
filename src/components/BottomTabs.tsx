@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useMusic } from '../context/MusicContext';
 import { playTrack, pauseTrack } from '../services/TrackPlayerService';
-import NowPlayingScreen from '../screens/NowPlayingScreen';
+import NowPlayingScreen from '../screens/music/NowPlayingScreen';
 import PlaylistScreen from '../screens/PlaylistScreen';
 
 const Tab = createBottomTabNavigator();

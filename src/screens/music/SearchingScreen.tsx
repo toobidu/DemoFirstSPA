@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Timer, MusicSquareSearch, CloseCircle } from 'iconsax-react-nativejs';
 
 const SearchingScreen = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -108,7 +109,7 @@ const SearchingScreen = () => {
 
   const renderHistoryItem = ({ item }: { item: string }) => (
     <View style={styles.historyItem}>
-      <Text style={styles.historyIcon}>🕒</Text>
+      <Timer color="#ffffff"/>
       <TouchableOpacity
         style={styles.historyTextContainer}
         onPress={() => handleSearch(item)}
@@ -125,7 +126,7 @@ const SearchingScreen = () => {
           );
         }}
       >
-        <Text style={styles.historyIcon}>❌</Text>
+        <CloseCircle color="red"/>
       </TouchableOpacity>
     </View>
   );
@@ -154,7 +155,7 @@ const SearchingScreen = () => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.searchContainer}>
-        <Text style={styles.searchIcon}>🔍</Text>
+        <MusicSquareSearch color="black" variant="Outline"/>
         <TextInput
           style={styles.searchInput}
           placeholder="Tìm kiếm bài hát, nghệ sĩ..."
@@ -172,7 +173,7 @@ const SearchingScreen = () => {
               setSearchResults(null);
             }}
           >
-            <Text style={styles.clearIcon}>❌</Text>
+            <CloseCircle color="red"/>
           </TouchableOpacity>
         ) : null}
       </View>
