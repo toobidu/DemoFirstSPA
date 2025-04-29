@@ -9,7 +9,7 @@ import {
   View,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import { User, Notification, Clock, Setting2, InfoCircle, Logout, ArrowRight} from 'iconsax-react-nativejs';
+import {ArrowRight, InfoCircle, Setting2, User} from 'iconsax-react-nativejs';
 
 // Import theme constants
 const COLORS = {
@@ -45,20 +45,10 @@ const Sidebar: React.FC<SidebarProps> = ({isVisible, onClose, userData, translat
   const navigation = useNavigation();
 
   const menuItems: MenuItem[] = [
-     {
+    {
       icon: <User color="#ffffff" variant="Bold"/>,
       title: 'Hồ sơ',
       onPress: () => navigation.navigate('ProfileScreen'),
-    },
-    {
-      icon: <Notification color="#ffffff" variant="Bold"/>,
-      title: 'Thông báo',
-      onPress: () => navigation.navigate('FavoriteSongsScreen'),
-    },
-    {
-      icon: <Clock color="#ffffff" variant="Bold"/>,
-      title: 'Lịch sử',
-      onPress: () => navigation.navigate('FavoriteSongsScreen'),
     },
     {
       icon: <Setting2 color="#ffffff" variant="Bold"/>,
@@ -70,58 +60,51 @@ const Sidebar: React.FC<SidebarProps> = ({isVisible, onClose, userData, translat
       title: 'Giới thiệu',
       onPress: () => navigation.navigate('IntroductionScreen'),
     },
-    {
-      icon: <Logout color="#ffffff" variant="Bold"/>,
-      title: 'Đăng xuất',
-      onPress: () => {
-        navigation.navigate('WelcomeScreen');
-      },
-    },
   ];
 
   if (!isVisible) return null;
 
   return (
-    <Animated.View
-      style={[
-        styles.animatedContainer,
-        {
-          transform: [{translateX}],
-        },
-      ]}
-    >
-      <SafeAreaView style={styles.container}>
-        <View style={styles.header}>
-          <TouchableOpacity onPress={onClose} style={styles.closeButton}>
-            <ArrowRight color="#ffffff"/>
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.userInfo}>
-          <Image source={{uri: userData.avatarUrl}} style={styles.avatar} />
-          <Text style={styles.userName}>{userData.name}</Text>
-          <Text style={styles.userEmail}>{userData.email}</Text>
-          {userData.premium && (
-            <View style={styles.premiumBadge}>
-              <Text style={styles.premiumText}>Premium</Text>
-            </View>
-          )}
-        </View>
-
-        <View style={styles.menuContainer}>
-          {menuItems.map((item, index) => (
-            <TouchableOpacity
-              key={index}
-              style={styles.menuItem}
-              onPress={item.onPress}
-            >
-              {item.icon}
-              <Text style={styles.menuText}>{item.title}</Text>
+      <Animated.View
+          style={[
+            styles.animatedContainer,
+            {
+              transform: [{translateX}],
+            },
+          ]}
+      >
+        <SafeAreaView style={styles.container}>
+          <View style={styles.header}>
+            <TouchableOpacity onPress={onClose} style={styles.closeButton}>
+              <ArrowRight color="#ffffff"/>
             </TouchableOpacity>
-          ))}
-        </View>
-      </SafeAreaView>
-    </Animated.View>
+          </View>
+
+          <View style={styles.userInfo}>
+            <Image source={{uri: userData.avatarUrl}} style={styles.avatar}/>
+            <Text style={styles.userName}>{userData.name}</Text>
+            <Text style={styles.userEmail}>{userData.email}</Text>
+            {userData.premium && (
+                <View style={styles.premiumBadge}>
+                  <Text style={styles.premiumText}>Premium</Text>
+                </View>
+            )}
+          </View>
+
+          <View style={styles.menuContainer}>
+            {menuItems.map((item, index) => (
+                <TouchableOpacity
+                    key={index}
+                    style={styles.menuItem}
+                    onPress={item.onPress}
+                >
+                  {item.icon}
+                  <Text style={styles.menuText}>{item.title}</Text>
+                </TouchableOpacity>
+            ))}
+          </View>
+        </SafeAreaView>
+      </Animated.View>
   );
 };
 

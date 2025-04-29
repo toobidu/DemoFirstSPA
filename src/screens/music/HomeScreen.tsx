@@ -7,7 +7,6 @@ import {
   ScrollView,
   StyleSheet,
   Animated,
-  SafeAreaView,
   Alert,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
@@ -18,6 +17,9 @@ import { getFullMinioUrl } from '../../service/minioUrl';
 import AuthService from '../../service/auth';
 import TrackPlayer, { Event, useTrackPlayerEvents } from 'react-native-track-player';
 import { AuthContext } from '../../context/AuthContext';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Notification } from 'iconsax-react-nativejs';
+import Notice from '../../components/Notice';
 
 const MOCK_DATA = {
   user: {
@@ -81,6 +83,8 @@ const HomeScreen = () => {
   const [featuredPlaylists, setFeaturedPlaylists] = useState(MOCK_DATA.featuredPlaylists);
   const [isSidebarVisible, setIsSidebarVisible] = useState(false);
   const [currentTrack, setCurrentTrack] = useState(null);
+  const [isNoticeVisible, setIsNoticeVisible] = useState(false);
+  const [noticeAnchor, setNoticeAnchor] = useState({ x: 0, y: 0 });
   const translateX = useRef(new Animated.Value(1000)).current;
   const blurOpacity = useRef(new Animated.Value(0)).current;
 
@@ -175,6 +179,16 @@ const HomeScreen = () => {
     }
   };
 
+  const toggleNotice = (event) => {
+    // Lấy vị trí của nút thông báo
+    if (event) {
+      event.target.measure((x, y, width, height, pageX, pageY) => {
+        setNoticeAnchor({ x: pageX, y: pageY + height });
+      });
+    }
+    setIsNoticeVisible(!isNoticeVisible);
+  };
+
   const handleSongPress = async (song: any) => {
     console.log('Playing song:', song.title);
     const track = {
@@ -243,91 +257,127 @@ const HomeScreen = () => {
   );
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.mainContent}>
-        <View style={styles.header}>
-          <Text style={styles.greeting}>{greeting}</Text>
-          <TouchableOpacity onPress={toggleSidebar} style={styles.iconButton}>
-            <Image source={{ uri: userData.avatarUrl }} style={styles.avatarImage} />
-          </TouchableOpacity>
+    <SafeAreaView style={styles.safeArea} edges={['top']}>
+      <View style={styles.container}>
+        <View style={styles.mainContent}>
+          <View style={styles.header}>
+            <Text style={styles.greeting}>{greeting}</Text>
+            <View style={styles.headerRight}>
+              <TouchableOpacity
+                onPress={toggleNotice}
+                style={styles.iconButton}
+              >
+                <Notification size={24} color="#ffffff" variant="Bold"/>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={toggleSidebar} style={styles.iconButton}>
+                <Image source={{ uri: userData.avatarUrl }} style={styles.avatarImage} />
+              </TouchableOpacity>
+            </View>
+          </View>
+
+          <ScrollView
+            style={styles.content}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={styles.scrollContent}
+          >
+            <View style={styles.section}>
+              <Text style={styles.sectionTitle}>Phát gần đây</Text>
+              <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalScroll}>
+                {recentlyPlayed.map((item) => (
+                  <TouchableOpacity
+                    key={item.id}
+                    style={styles.musicCard}
+                    onPress={() => handleSongPress(item)}
+                  >
+                    <Image source={{ uri: item.albumCover }} style={styles.albumCover} />
+                    <Text style={styles.songTitle} numberOfLines={1}>{item.title}</Text>
+                    <Text style={styles.artistName} numberOfLines={1}>{item.artist}</Text>
+                  </TouchableOpacity>
+                ))}
+              </ScrollView>
+            </View>
+
+            <View style={styles.section}>
+              <Text style={styles.sectionTitle}>Có thể bạn sẽ thích</Text>
+              <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalScroll}>
+                {recentlyPlayed.map((item) => (
+                  <TouchableOpacity
+                    key={item.id}
+                    style={styles.playlistCard}
+                    onPress={() => handlePlaylistPress(item)}
+                  >
+                    <Image source={{ uri: item.albumCover }} style={styles.playlistCover} />
+                    <Text style={styles.playlistTitle} numberOfLines={2}>{item.title}</Text>
+                    <Text style={styles.playlistDescription} numberOfLines={2}>
+                      {item.description || 'No description'}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
+              </ScrollView>
+            </View>
+
+            <View style={styles.section}>
+              <Text style={styles.sectionTitle}>SoundCLone lựa chọn cho bạn</Text>
+              <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalScroll}>
+                {featuredPlaylists.map((item) => (
+                  <TouchableOpacity
+                    key={item.id}
+                    style={styles.playlistCard}
+                    onPress={() => handlePlaylistPress(item)}
+                  >
+                    <Image source={{ uri: item.coverImage }} style={styles.playlistCover} />
+                    <Text style={styles.playlistTitle} numberOfLines={2}>{item.title}</Text>
+                    <Text style={styles.playlistDescription} numberOfLines={2}>{item.description}</Text>
+                  </TouchableOpacity>
+                ))}
+              </ScrollView>
+            </View>
+          </ScrollView>
         </View>
 
-        <ScrollView
-          style={styles.content}
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={styles.scrollContent}
-        >
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Phát gần đây</Text>
-            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalScroll}>
-              {recentlyPlayed.map((item) => (
-                <TouchableOpacity
-                  key={item.id}
-                  style={styles.musicCard}
-                  onPress={() => handleSongPress(item)}
-                >
-                  <Image source={{ uri: item.albumCover }} style={styles.albumCover} />
-                  <Text style={styles.songTitle} numberOfLines={1}>{item.title}</Text>
-                  <Text style={styles.artistName} numberOfLines={1}>{item.artist}</Text>
-                </TouchableOpacity>
-              ))}
-            </ScrollView>
-          </View>
+        <MusicPlayerBar currentTrack={currentTrack} />
 
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Có thể bạn sẽ thích</Text>
-            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalScroll}>
-              {recentlyPlayed.map((item) => (
-                <TouchableOpacity
-                  key={item.id}
-                  style={styles.playlistCard}
-                  onPress={() => handlePlaylistPress(item)}
-                >
-                  <Image source={{ uri: item.albumCover }} style={styles.playlistCover} />
-                  <Text style={styles.playlistTitle} numberOfLines={2}>{item.title}</Text>
-                  <Text style={styles.playlistDescription} numberOfLines={2}>
-                    {item.description || 'No description'}
-                  </Text>
-                </TouchableOpacity>
-              ))}
-            </ScrollView>
-          </View>
+        {isSidebarVisible && <SidebarBackdrop />}
+        {isSidebarVisible && (
+          <Sidebar
+            isVisible={isSidebarVisible}
+            onClose={toggleSidebar}
+            userData={userData}
+            translateX={translateX}
+          />
+        )}
 
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>SoundCLone lựa chọn cho bạn</Text>
-            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalScroll}>
-              {featuredPlaylists.map((item) => (
-                <TouchableOpacity
-                  key={item.id}
-                  style={styles.playlistCard}
-                  onPress={() => handlePlaylistPress(item)}
-                >
-                  <Image source={{ uri: item.coverImage }} style={styles.playlistCover} />
-                  <Text style={styles.playlistTitle} numberOfLines={2}>{item.title}</Text>
-                  <Text style={styles.playlistDescription} numberOfLines={2}>{item.description}</Text>
-                </TouchableOpacity>
-              ))}
-            </ScrollView>
-          </View>
-        </ScrollView>
+        {isNoticeVisible && (
+          <>
+            <Animated.View
+              style={[styles.backdrop, { opacity: blurOpacity }]}
+            >
+              <TouchableOpacity
+                style={StyleSheet.absoluteFill}
+                onPress={() => setIsNoticeVisible(false)}
+              />
+            </Animated.View>
+            <View style={[
+              styles.noticeContainer,
+              {
+                top: noticeAnchor.y,
+                right: 16,
+              }
+            ]}>
+              <Notice onClose={() => setIsNoticeVisible(false)} />
+            </View>
+          </>
+        )}
       </View>
-
-      <MusicPlayerBar currentTrack={currentTrack} />
-
-      {isSidebarVisible && <SidebarBackdrop />}
-      {isSidebarVisible && (
-        <Sidebar
-          isVisible={isSidebarVisible}
-          onClose={toggleSidebar}
-          userData={userData}
-          translateX={translateX}
-        />
-      )}
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: '#121212',
+  },
   container: {
     flex: 1,
     backgroundColor: '#121212',
@@ -346,7 +396,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 16,
-    height: 60,
+    paddingVertical: 12,
     borderBottomWidth: 1,
     borderBottomColor: 'rgba(255,255,255,0.1)',
   },
@@ -356,9 +406,12 @@ const styles = StyleSheet.create({
     color: '#1DB954',
     lineHeight: 30,
   },
+  headerRight: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 16,
+  },
   iconButton: {
-    width: 32,
-    height: 32,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -423,13 +476,25 @@ const styles = StyleSheet.create({
     color: 'rgba(255,255,255,0.6)',
   },
   backdrop: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    zIndex: 1,
+  },
+  noticeContainer: {
     position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    zIndex: 999,
+    width: '80%',
+    maxWidth: 400,
+    backgroundColor: '#282828',
+    borderRadius: 8,
+    zIndex: 2,
+    elevation: 5,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
   },
 });
 
