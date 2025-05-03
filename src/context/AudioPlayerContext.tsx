@@ -1,7 +1,7 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import TrackPlayer, { Event, State, Capability } from 'react-native-track-player';
-import { getSongs } from '../service/apiSong';
-import { getFullMinioUrl } from '../service/minioUrl';
+import React, {createContext, useContext, useEffect, useState} from 'react';
+import TrackPlayer, {Event, State} from 'react-native-track-player';
+import {getSongs} from '../service/apiSong';
+import {getFullMinioUrl} from '../service/minioUrl';
 
 export interface Track {
   id: string;
@@ -17,16 +17,25 @@ export interface AudioPlayerContextType {
   isPlayerReady: boolean;
   position: number;
   duration: number;
+
   togglePlay(): Promise<void>;
+
   nextTrack(): Promise<void>;
+
   previousTrack(): Promise<void>;
+
   playTrack(track: Track): Promise<void>;
+
   maximize(): void;
 }
 
-const AudioPlayerContext = createContext<AudioPlayerContextType | undefined>(undefined);
+const AudioPlayerContext = createContext<AudioPlayerContextType | undefined>(
+  undefined,
+);
 
-export const AudioPlayerProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const AudioPlayerProvider: React.FC<{children: React.ReactNode}> = ({
+  children,
+}) => {
   const [currentTrack, setCurrentTrack] = useState<Track | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isPlayerReady, setIsPlayerReady] = useState(false);
@@ -43,17 +52,24 @@ export const AudioPlayerProvider: React.FC<{ children: React.ReactNode }> = ({ c
         let attempts = 0;
         const maxAttempts = 30; // Tăng lên 15 giây
         while (state === State.None && attempts < maxAttempts) {
-          console.log(`TrackPlayer chưa sẵn sàng, thử lần ${attempts + 1}/${maxAttempts}`);
+          console.log(
+            `TrackPlayer chưa sẵn sàng, thử lần ${attempts + 1}/${maxAttempts}`,
+          );
           await new Promise(resolve => setTimeout(resolve, 500));
           state = await TrackPlayer.getState();
           attempts++;
         }
 
         if (state === State.None) {
-          console.log('TrackPlayer vẫn chưa sẵn sàng, khởi tạo trong AudioPlayerContext...');
+          console.log(
+            'TrackPlayer vẫn chưa sẵn sàng, khởi tạo trong AudioPlayerContext...',
+          );
           await TrackPlayer.setupPlayer();
           state = await TrackPlayer.getState();
-          console.log('Trạng thái sau khi khởi tạo trong AudioPlayerContext:', state);
+          console.log(
+            'Trạng thái sau khi khởi tạo trong AudioPlayerContext:',
+            state,
+          );
         }
 
         console.log('Lấy danh sách bài hát...');
@@ -65,7 +81,9 @@ export const AudioPlayerProvider: React.FC<{ children: React.ReactNode }> = ({ c
             url: getFullMinioUrl(s.song_url),
             title: s.song_title,
             artist: s.Artist?.artist_name || 'Unknown Artist',
-            artwork: s.song_image_url ? getFullMinioUrl(s.song_image_url) : undefined,
+            artwork: s.song_image_url
+              ? getFullMinioUrl(s.song_image_url)
+              : undefined,
           };
         });
 
@@ -82,12 +100,15 @@ export const AudioPlayerProvider: React.FC<{ children: React.ReactNode }> = ({ c
       }
     })();
 
-    const sub1 = TrackPlayer.addEventListener(Event.PlaybackTrackChanged, async () => {
-      const idx = await TrackPlayer.getCurrentTrack();
-      if (idx !== null && isMounted) {
-        setCurrentTrack((await TrackPlayer.getTrack(idx)) as Track);
-      }
-    });
+    const sub1 = TrackPlayer.addEventListener(
+      Event.PlaybackTrackChanged,
+      async () => {
+        const idx = await TrackPlayer.getCurrentTrack();
+        if (idx !== null && isMounted) {
+          setCurrentTrack((await TrackPlayer.getTrack(idx)) as Track);
+        }
+      },
+    );
     const sub2 = TrackPlayer.addEventListener(Event.PlaybackState, async () => {
       const state = await TrackPlayer.getState();
       if (isMounted) setIsPlaying(state === State.Playing);
@@ -152,8 +173,7 @@ export const AudioPlayerProvider: React.FC<{ children: React.ReactNode }> = ({ c
         previousTrack,
         playTrack,
         maximize,
-      }}
-    >
+      }}>
       {children}
     </AudioPlayerContext.Provider>
   );
@@ -161,6 +181,7 @@ export const AudioPlayerProvider: React.FC<{ children: React.ReactNode }> = ({ c
 
 export const useAudioPlayer = (): AudioPlayerContextType => {
   const ctx = useContext(AudioPlayerContext);
-  if (!ctx) throw new Error('useAudioPlayer must be within AudioPlayerProvider');
+  if (!ctx)
+    throw new Error('useAudioPlayer must be within AudioPlayerProvider');
   return ctx;
 };

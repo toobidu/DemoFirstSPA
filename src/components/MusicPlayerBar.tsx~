@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import usePlayerStore from '../store/playerStore.js';
+import usePlayerStore from '../store/playerStore';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 

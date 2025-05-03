@@ -10,7 +10,7 @@ import {
   Modal,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { SearchNormal1, Add } from 'iconsax-react-nativejs';
+import { SearchNormal1, Add, CloseCircle, CloseSquare, Lock1, ToggleOnCircle, ToggleOffCircle } from 'iconsax-react-nativejs';
 
 const PlaylistScreen = () => {
   const [isSearchVisible, setIsSearchVisible] = useState(false);
@@ -74,7 +74,7 @@ const PlaylistScreen = () => {
                   autoFocus
                 />
                 <TouchableOpacity onPress={toggleSearch}>
-                  <Text>❌</Text>
+                  <CloseSquare color="black"/>
                 </TouchableOpacity>
               </View>
             </View>
@@ -110,7 +110,7 @@ const PlaylistScreen = () => {
                   style={styles.closeButton}
                   onPress={() => setIsModalVisible(false)}
                 >
-                  <Text>❌</Text>
+                  <CloseCircle color="red"/>
                 </TouchableOpacity>
                 <Text style={styles.modalTitle}>Tạo playlist mới</Text>
               </View>
@@ -126,7 +126,7 @@ const PlaylistScreen = () => {
               </View>
               <View style={styles.privacyContainer}>
                 <View style={styles.privacyHeader}>
-                  <Text>🔒</Text>
+                  <Lock1 color="white"/>
                   <Text style={styles.privacyTitle}>Quyền riêng tư</Text>
                 </View>
                 <View style={styles.privacyOption}>
@@ -140,7 +140,12 @@ const PlaylistScreen = () => {
                     onPress={() => setIsPublic(!isPublic)}
                     style={styles.checkbox}
                   >
-                    <Text>{isPublic ? '☑' : '☐'}</Text>
+                    {isPublic ? (
+                        <ToggleOffCircle color="white" size={24} />
+                    ) : (
+                        <ToggleOnCircle color="white" size={24} variant="Bold" />
+
+                    )}
                   </TouchableOpacity>
                 </View>
               </View>

@@ -73,25 +73,45 @@ When you want to forcefully reload, for example to reset the state of your app, 
 - **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
 - **iOS**: Press <kbd>R</kbd> in iOS Simulator.
 
-## Congratulations! :tada:
+# Note: Some Packages Used
+- Use Zustand to manage state
+```sh
+npm install zustand
+```
+- Use React Navigation for navigation
+```sh
+npm install @react-navigation/native @react-navigation/native-stack @react-navigation/bottom-tabs
+```
+- Use React Native Track Player for music player
+```sh
+npm install react-native-track-player
+```
+- Use React Native Async Storage for async storage
+```sh
+npm install @react-native-async-storage/async-storage
+```
+- Use Iconsax React Native for icons
+```sh
+npm i iconsax-react-nativejs react-native-svg
+```
+- Use React Native Gesture Handler for gesture
+```sh
+npm install react-native-gesture-handler
+```
+- Use React Native Safe Area Context for safe area
+```sh
+npm install react-native-safe-area-context
+```
+- Use React Native Screens for screens
+```sh
+npm install react-native-screens
+```
+- Use React Native Encrypted Storage for encrypted storage
+```sh
+npm install react-native-encrypted-storage
+```
+- Use Axios for api
+```sh
+npm install axios
+```
 
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.

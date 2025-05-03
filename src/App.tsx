@@ -1,9 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import TrackPlayer from 'react-native-track-player';
-
+// import TrackPlayer from 'react-native-track-player';
 import { AuthProvider } from './context/AuthContext'; // bạn có thể cần điều chỉnh đường dẫn
 import LoginScreen from './screens/auth/LoginScreen';
 import RegisterScreen from './screens/auth/RegisterScreen';
@@ -11,23 +10,12 @@ import ForgotPasswordScreen from './screens/auth/ForgotPasswordScreen';
 import NowPlayingScreen from './screens/music/NowPlayingScreen';
 import MainApp from './screens/music/MainApp';
 import ProfileScreen from "./screens/other/sidebar-screen/ProfileScreen";
-import IntroductionScreen from "./screens/other/sidebar-screen/IntroductionScreen";
+import IntroductionScreen from './screens/other/sidebar-screen/IntroductionScreen';
+import MusicPlayerBar from 'components/MusicPlayerBar';
 
 const Stack = createStackNavigator();
 
 const App = () => {
-  useEffect(() => {
-    const setupPlayer = async () => {
-      try {
-        await TrackPlayer.setupPlayer();
-        console.log('TrackPlayer initialized');
-      } catch (error) {
-        console.error('Error setting up TrackPlayer:', error);
-      }
-    };
-    setupPlayer();
-  }, []);
-
   return (
     <SafeAreaProvider>
       <AuthProvider>
@@ -41,6 +29,7 @@ const App = () => {
             <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
             <Stack.Screen name="IntroductionScreen" component={IntroductionScreen} />
           </Stack.Navigator>
+          <MusicPlayerBar />
         </NavigationContainer>
       </AuthProvider>
     </SafeAreaProvider>

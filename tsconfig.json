@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "allowJs": true,
+    "esModuleInterop": true,
     "target": "esnext",
     "module": "commonjs",
     "lib": ["es6", "dom"],
