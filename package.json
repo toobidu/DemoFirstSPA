@@ -17,6 +17,7 @@
     "@react-navigation/native-stack": "^7.3.10",
     "@react-navigation/stack": "^7.2.10",
     "axios": "^1.8.3",
+    "date-fns": "^4.1.0",
     "iconsax-react-native": "^0.0.8",
     "iconsax-react-nativejs": "^0.0.8",
     "react": "19.0.0",
