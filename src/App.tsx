@@ -24,10 +24,14 @@ const App = () => {
             {/*<Stack.Screen name="LoginScreen" component={LoginScreen} />*/}
             {/*<Stack.Screen name="RegisterScreen" component={RegisterScreen} />*/}
             {/*<Stack.Screen name="ForgotPasswordScreen" component={ForgotPasswordScreen} />*/}
+            
             <Stack.Screen name="MainApp" component={MainApp} />
             <Stack.Screen name="NowPlayingScreen" component={NowPlayingScreen} />
             <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
             <Stack.Screen name="IntroductionScreen" component={IntroductionScreen} />
+            <Stack.Screen name="History" component={History} />
+            <Stack.Screen name="SettingsScreen" component={SettingsScreen} />
+            <Stack.Screen name="ComingSoonScreen" component={ComingSoonScreen} />
           </Stack.Navigator>
           <MusicPlayerBar />
         </NavigationContainer>
